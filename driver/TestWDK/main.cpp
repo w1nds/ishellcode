@@ -15,6 +15,8 @@ extern "C"
 
 
 #include "GLOBAL.h"
+#include "inject.h"
+#include "ntdll.h"
 #include "WDKExt/Wdk.h"
 extern "C" DRIVER_INITIALIZE DriverEntry;
 
@@ -153,6 +155,12 @@ NTSTATUS DriverEntry(PDRIVER_OBJECT pDriverObj, PUNICODE_STRING pRegistryString)
 		if (!NT_SUCCESS(status))
 		{
 			debug_msg("WdkInitSystem failed\n");
+			break;
+		}
+		status = NTDLL::Initialize();
+		if (!NT_SUCCESS(status))
+		{
+			debug_msg("Ntdll::Initialize() failed...\r\n");
 			break;
 		}
 		break;
